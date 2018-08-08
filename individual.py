@@ -27,16 +27,14 @@ class IndividualGene:
         for i in range(int(self.configuration.board_size * self.configuration.board_size * self.mPercentage)):
             randomNo = random.randint(1, self.configuration.board_size * self.configuration.board_size - 1)
             replace = self.moves[random.randint(0, 7)]
-            while replace == newGene[randomNo]:
+            while replace == self.gene[randomNo]:
                 replace = self.moves[random.randint(0, 7)]
-            newGene[randomNo] = replace
-        
-        return IndividualGene(self.configuration, newGene)
+            self.gene[randomNo] = replace
 
     def crossover(self, other):
         randomNo = random.randint(1, self.configuration.board_size * self.configuration.board_size - 1)
         newGene = self.gene[0:randomNo] + other.gene[randomNo:]
-        return IndividualGene(self.configuration, newGene)
+        self.gene = newGene
 
     def create(self):
         t = ''
