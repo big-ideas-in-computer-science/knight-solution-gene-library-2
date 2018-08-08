@@ -1,6 +1,6 @@
 import random
 
-class individual:
+class IndividualGene:
     
     # The solutions's genome, a list of moves
     gene = list()
