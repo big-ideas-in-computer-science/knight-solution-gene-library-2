@@ -20,7 +20,7 @@ class IndividualGene:
                 raise Exception
             self.gene = gene
         self.cost = self.fitness()
-    
+      
     def mutate(self):
         newGene = self.gene
         
@@ -31,12 +31,12 @@ class IndividualGene:
                 replace = self.moves[random.randint(0, 7)]
             newGene[randomNo] = replace
         
-        return individual(self.configuration, newGene)
+        return IndividualGene(self.configuration, newGene)
 
     def crossover(self, other):
         randomNo = random.randint(1, self.configuration.board_size * self.configuration.board_size - 1)
         newGene = self.gene[0:randomNo] + other.gene[randomNo:]
-        return individual(self.configuration, newGene)
+        return IndividualGene(self.configuration, newGene)
 
     def create(self):
         t = ''
@@ -105,13 +105,13 @@ class Configuration:
         self.generation_max = generation_max
 
 
-config = Configuration(10, 5, 5, 1)
-g = individual(config)
-print("g", g.fitness())
-h = individual(config)
-print("h", h.fitness())
-i = g.crossover(h)
-print("crossover", i.fitness())
-j = g.mutate()
-print("mutate", j.fitness())
-print("path", j.path())
+# config = Configuration(10, 5, 5, 1)
+# g = IndividualGene(config)
+# print("g", g.fitness())
+# h = IndividualGene(config)
+# print("h", h.fitness())
+# i = g.crossover(h)
+# print("crossover", i.fitness())
+# j = g.mutate()
+# print("mutate", j.fitness())
+# print("path", j.path())
