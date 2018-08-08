@@ -19,7 +19,7 @@ class individual:
             if len(gene) != configuration.board_size * configuration.board_size:
                 raise Exception
             self.gene = gene
-        self.cost = self.evaluate()
+        self.cost = self.fitness()
     
     def mutate(self):
         newGene = self.gene
@@ -49,7 +49,7 @@ class individual:
             created_list.append(self.moves[random.randint(0, 7)])
         return created_list
     
-    def evaluate(self):
+    def fitness(self):
         count = 0
         point = [self.configuration.start_row, self.configuration.start_col]
         fitCount = 0
@@ -91,6 +91,50 @@ class individual:
             traversedList.append(pt)
         
         return fitCount
+    
+    def path(self):
+        count = 0
+        point = [self.configuration.start_row, self.configuration.start_col]
+        traversedList = []
+        for i in self.gene:
+            count += 1
+            if count == 1:
+                pt = "[" + str(point[0]) + "," + str(point[1]) + "]"
+                traversedList.append(pt)
+                continue
+            
+            if i[0:1] == 'n':
+                point[0] -= 2
+            elif i[0:1] == 's':
+                point[0] += 2
+            elif i[0:1] == 'e':
+                point[1] += 2
+            elif i[0:1] == 'w':
+                point[1] -= 2
+
+            if i[2:3] == 'n':
+                point[0] -= 1
+            elif i[2:3] == 's':
+                point[0] += 1
+            elif i[2:3] == 'e':
+                point[1] += 1
+            elif i[2:3] == 'w':
+                point[1] -= 1
+            
+            # Has to be a valid point
+            if not (point[0] > 0 and point[0] <= self.configuration.board_size
+                and point[1] > 0 and point[1] <= self.configuration.board_size):
+                break
+
+            # has to be not traversed already
+            pt = "[" + str(point[0]) + "," + str(point[1]) + "]"
+            if pt in traversedList:
+                break
+            
+            traversedList.append(pt)
+        
+        return traversedList
+
 
 class Configuration:
     def __init__(self, board_size, start_row, start_col, generation_max):
@@ -102,10 +146,11 @@ class Configuration:
 
 config = Configuration(10, 5, 5, 1)
 g = individual(config)
-print("g", g.evaluate())
+print("g", g.fitness())
 h = individual(config)
-print("h", h.evaluate())
+print("h", h.fitness())
 i = g.crossover(h)
-print("crossover", i.evaluate())
+print("crossover", i.fitness())
 j = g.mutate()
-print("mutate", j.evaluate())
+print("mutate", j.fitness())
+print("path", j.path())
