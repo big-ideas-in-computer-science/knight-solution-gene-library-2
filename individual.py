@@ -50,47 +50,8 @@ class individual:
         return created_list
     
     def fitness(self):
-        count = 0
-        point = [self.configuration.start_row, self.configuration.start_col]
-        fitCount = 0
-        traversedList = []
-        for i in self.gene:
-            count += 1
-            if count == 1:
-                continue
-            
-            if i[0:1] == 'n':
-                point[0] -= 2
-            elif i[0:1] == 's':
-                point[0] += 2
-            elif i[0:1] == 'e':
-                point[1] += 2
-            elif i[0:1] == 'w':
-                point[1] -= 2
-
-            if i[2:3] == 'n':
-                point[0] -= 1
-            elif i[2:3] == 's':
-                point[0] += 1
-            elif i[2:3] == 'e':
-                point[1] += 1
-            elif i[2:3] == 'w':
-                point[1] -= 1
-            
-            # Has to be a valid point
-            if not (point[0] > 0 and point[0] <= self.configuration.board_size
-                and point[1] > 0 and point[1] <= self.configuration.board_size):
-                break
-
-            # has to be not traversed already
-            pt = str(point[0]) + str(point[1])
-            if pt in traversedList:
-                break
-            
-            fitCount += 1
-            traversedList.append(pt)
-        
-        return fitCount
+        path = self.path()
+        return len(path)
     
     def path(self):
         count = 0
@@ -99,7 +60,7 @@ class individual:
         for i in self.gene:
             count += 1
             if count == 1:
-                pt = "[" + str(point[0]) + "," + str(point[1]) + "]"
+                pt = [] + point
                 traversedList.append(pt)
                 continue
             
@@ -127,7 +88,7 @@ class individual:
                 break
 
             # has to be not traversed already
-            pt = "[" + str(point[0]) + "," + str(point[1]) + "]"
+            pt = [] + point
             if pt in traversedList:
                 break
             
